@@ -15,8 +15,8 @@ t1 = time.time()
 def remove_duplicates(my_list):
     return list(set(my_list))
 
-stop_words = set(stopwords.words('english'))
 def remove_stopwords(words):
+    stop_words = set(stopwords.words('english'))
     wx = [w for w in words if not w in stop_words]  ## Removing Stopwords
     return wx
 
@@ -106,6 +106,65 @@ def average_vector(vectors):
 
     return v
 
+def match(s):
+    s = re.sub('\[|\]|\,|\'', '', s)
+    words = s.split(' ')
+    vec1 = []
+    for i in words:
+        vec1.append(float(i))
+
+    result = 1 - spatial.distance.cosine(vec1,avg_v)
+    # print(result)
+    return result
+
+
+def common_keywords(text):
+    keyword_data = pd.read_csv('D:/ML/QNA_project/CSV_files/keywords.csv')
+    filter_data = pd.read_csv('D:/ML/QNA_project/CSV_files/filters.csv')
+
+    # text = "he lives in bangalor1"
+    text = text.lower()
+    w = text.split(' ')
+    print(w)
+
+    max_edit_distance_dictionary = 2
+    prefix_length = 9
+    sym_spell = SymSpell(max_edit_distance_dictionary, prefix_length)
+    dictionary_path = os.path.join(os.path.dirname(__file__), "dictionary_final.txt")
+    term_index = 0  # column of the term in the dictionary text file
+    count_index = 1  # column of the term frequency in the dictionary text file
+
+    if not sym_spell.load_dictionary(dictionary_path, term_index, count_index):
+        print("Dictionary file not found")
+
+    max_edit_distance_lookup = 2
+    suggestion_verbosity = Verbosity.CLOSEST
+
+    ques = ""
+    for input in w:
+        suggestions = sym_spell.lookup(input, max_edit_distance_lookup)
+        try:
+            ques = ques + suggestions[0].term + " "
+        except:
+            ques = ques + input + " "
+    ques = ques + text
+    # print(ques)
+    words = []
+    for i in range(len(keyword_data)):
+        str = keyword_data['Keywords'][i]
+        str = str.lower()
+        if (ques.find(str, 0, len(str)) != -1):
+            words.append(str)
+
+    for i in range(len(filter_data)):
+        str = filter_data['Filters'][i]
+        str = str.lower()
+        if (ques.find(str, 0, len(str)) != -1):
+            words.append(str)
+
+    return len(words)
+
+
 text = preprocessing(text)
 
 tokenizer = RegexpTokenizer(r'\w+')
@@ -174,38 +233,62 @@ vs = vectors(words)
 
 avg_v = average_vector(vs)
 
-data = pd.read_csv('D:/ML/QNA_project/CSV_files/average_vectors.csv')
+vector_data = pd.read_csv('D:/ML/QNA_project/CSV_files/final_question_vector.csv')
 print('sparsh')
 
+vector_data['Similarity'] = vector_data['Average_vector'].apply(match)
+# print(vector_data.nlargest(5,['Similarity']))
+#
+dummy = vector_data.nlargest(30,['Similarity'])
+# print(dummy['Question'].head(5))
+# print(time.time()-t1)
+
+dummy['common_keyword'] = dummy['Question'].apply(common_keywords)
+min_kw = min(dummy['common_keyword'])
+max_kw = max(dummy['common_keyword'])
+dummy['common_keyword'] = (dummy['common_keyword']-min_kw)/(max_kw-min_kw)
 
 
-
-def match(s):
-    s = re.sub('\[|\]|\,|\'', '', s)
-    words = s.split(' ')
-    vec1 = []
-    for i in words:
-        vec1.append(float(i))
-
-    result = 1 - spatial.distance.cosine(vec1,avg_v)
-    # print(result)
-    return result
-
-data['Similarity'] = data['Average_vector'].apply(match)
-print(data.nlargest(5,['Similarity']))
-
-dummy = data.nlargest(50,['Similarity'])
-print(dummy['Question'].head(5))
-print(time.time()-t1)
-
-id = dummy.iloc[0]['ID']
-id = int(id)
-
-data_a = pd.read_csv('D:/ML/QNA_project/CSV_files/answers.csv')
-
-req = data_a.loc[data_a['question_id']==id]
-
-print(req.iloc[0]['Answers'])
+dummy['sum3'] = dummy['view_count'] + dummy['answer_count'] + dummy['comment_count']
+min_s = min(dummy['sum3'])
+max_s = max(dummy['sum3'])
+dummy['sum3'] = (dummy['sum3']-min_s)/(max_s-min_s)
 
 
-# for i in range(len(dummy)):
+h1 = 1
+h2 = 0.1
+h3 = 0.1
+
+dummy['final_score'] = (h1*dummy['Similarity']) + (h2*dummy['common_keyword']) + (h3*dummy['sum3'])
+
+final = dummy.nlargest(10,['final_score'])
+print(final.head())
+print(final['Question'].head())
+
+def getting_answer(final):
+    answer_data = pd.read_csv('D:/ML/QNA_project/CSV_files/answers.csv')
+    answers_list = []
+    for j in range(len(final)):
+        id = final.iloc[j]['ID']
+        id = int(id)
+        req = answer_data.loc[answer_data['question_id'] == id]
+
+        max = -1
+        id = req.iloc[0]['ID']
+        date = req.iloc[0]['modified_on']
+
+        for i in range(len(req)):
+            up_c = int(req.iloc[i]['upvote_count'])
+            cm_c = int(req.iloc[i]['comment_count'])
+            d1 = req.iloc[i]['modified_on']
+            if up_c + cm_c > max:
+                max = up_c + cm_c
+                id = req.iloc[i]['ID']
+
+        ans = req.loc[req['ID'] == id]['Answers']
+        answers_list.append(ans)
+    return answers_list
+
+ans_list = getting_answer(final)
+for i in ans_list:
+    print(i)
