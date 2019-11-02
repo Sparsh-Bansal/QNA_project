@@ -29,6 +29,7 @@ def remove_duplicates(my_list):
 
 
 def remove_stopwords(words):
+    stop_words = set(stopwords.words('english'))
     wx = [w for w in words if not w in stop_words]  ## Removing Stopwords
     return wx
 
@@ -106,85 +107,87 @@ def average_vector(vectors):
 
     return v
 
-#
-clean_questions = standardize_text(data.head(), "Question")
+if __name__ == '__main__':
+    clean_questions = standardize_text(data.head(), "Question")
 
 
-tokenizer = RegexpTokenizer(r'\w+')
-clean_questions["tokens"] = clean_questions["Question"].apply(tokenizer.tokenize)
+    tokenizer = RegexpTokenizer(r'\w+')
+    clean_questions["tokens"] = clean_questions["Question"].apply(tokenizer.tokenize)
 
 
-clean_questions['tokens'] = clean_questions['tokens'].apply(remove_duplicates)      # Removing Duplicates
+    clean_questions['tokens'] = clean_questions['tokens'].apply(remove_duplicates)      # Removing Duplicates
 
 
-stop_words = set(stopwords.words('english'))
-clean_questions['tokens'] = clean_questions['tokens'].apply(remove_stopwords)
+    stop_words = set(stopwords.words('english'))
+    clean_questions['tokens'] = clean_questions['tokens'].apply(remove_stopwords)
 
 
-max_edit_distance_dictionary = 2
-prefix_length = 9
-sym_spell = SymSpell(max_edit_distance_dictionary, prefix_length)
-dictionary_path = os.path.join(os.path.dirname(__file__), "dictionary_final.txt")
-term_index = 0  # column of the term in the dictionary text file
-count_index = 1  # column of the term frequency in the dictionary text file
+    max_edit_distance_dictionary = 2
+    prefix_length = 9
+    sym_spell = SymSpell(max_edit_distance_dictionary, prefix_length)
+    dictionary_path = os.path.join(os.path.dirname(__file__), "dictionary_final.txt")
+    term_index = 0  # column of the term in the dictionary text file
+    count_index = 1  # column of the term frequency in the dictionary text file
 
-if not sym_spell.load_dictionary(dictionary_path, term_index, count_index):
-    print("Dictionary file not found")
+    if not sym_spell.load_dictionary(dictionary_path, term_index, count_index):
+        print("Dictionary file not found")
 
-max_edit_distance_lookup = 2
-suggestion_verbosity = Verbosity.CLOSEST
-clean_questions['tokens'] = clean_questions['tokens'].apply(spell_correction)
-# clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_spell1.csv')
+    max_edit_distance_lookup = 2
+    suggestion_verbosity = Verbosity.CLOSEST
+    clean_questions['tokens'] = clean_questions['tokens'].apply(spell_correction)
 
-# clean_questions = pd.read_csv('D:/ML/QNA_project/CSV_files/main_spell1.csv')
-max_edit_distance_dictionary = 0
-prefix_length = 7
-# create object
-sym_spell = SymSpell(max_edit_distance_dictionary, prefix_length)
-# load dictionary
-dictionary_path = os.path.join(os.path.dirname(__file__),"dictionary_final.txt")
-term_index = 0  # column of the term in the dictionary text file
-count_index = 1  # column of the term frequency in the dictionary text file
-if not sym_spell.load_dictionary(dictionary_path, term_index, count_index):
-    print("Dictionary file not found")
-clean_questions['tokens'] = clean_questions['tokens'].apply(word_segmentation)
-clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_word_seg.csv')
+    # clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_spell1.csv')
+    print('spell1 done')
+    # clean_questions = pd.read_csv('D:/ML/QNA_project/CSV_files/main_spell1.csv')
+    max_edit_distance_dictionary = 0
+    prefix_length = 7
+    # create object
+    sym_spell = SymSpell(max_edit_distance_dictionary, prefix_length)
+    # load dictionary
+    dictionary_path = os.path.join(os.path.dirname(__file__),"dictionary_final.txt")
+    term_index = 0  # column of the term in the dictionary text file
+    count_index = 1  # column of the term frequency in the dictionary text file
+    if not sym_spell.load_dictionary(dictionary_path, term_index, count_index):
+        print("Dictionary file not found")
+    clean_questions['tokens'] = clean_questions['tokens'].apply(word_segmentation)
+    # clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_word_seg.csv')
+    print('wordseg done')
 
+    max_edit_distance_dictionary = 2
+    prefix_length = 9
+    sym_spell = SymSpell(max_edit_distance_dictionary, prefix_length)
+    dictionary_path = os.path.join(os.path.dirname(__file__), "dictionary_final.txt")
+    term_index = 0  # column of the term in the dictionary text file
+    count_index = 1  # column of the term frequency in the dictionary text file
 
-max_edit_distance_dictionary = 2
-prefix_length = 9
-sym_spell = SymSpell(max_edit_distance_dictionary, prefix_length)
-dictionary_path = os.path.join(os.path.dirname(__file__), "dictionary_final.txt")
-term_index = 0  # column of the term in the dictionary text file
-count_index = 1  # column of the term frequency in the dictionary text file
+    if not sym_spell.load_dictionary(dictionary_path, term_index, count_index):
+        print("Dictionary file not found")
 
-if not sym_spell.load_dictionary(dictionary_path, term_index, count_index):
-    print("Dictionary file not found")
-
-max_edit_distance_lookup = 2
-suggestion_verbosity = Verbosity.CLOSEST
-clean_questions['tokens'] = clean_questions['tokens'].apply(spell_correction)
-clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_spell2.csv')
-
-
-clean_questions['tokens'] = clean_questions['tokens'].apply(remove_stopwords)
+    max_edit_distance_lookup = 2
+    suggestion_verbosity = Verbosity.CLOSEST
+    clean_questions['tokens'] = clean_questions['tokens'].apply(spell_correction)
 
 
-t1 =time.time()
-model = KeyedVectors.load_word2vec_format('D:/ML/QNA_project/model/GoogleNews-vectors-negative300.bin/GoogleNews-vectors-negative300.bin', binary=True)
-t2 = time.time()
-print('model loaded in {} seconds'.format(t2-t1))
-clean_questions['vectors'] = clean_questions['tokens'].apply(vectors)
-clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_vectors.csv')
+    clean_questions['tokens'] = clean_questions['tokens'].apply(remove_stopwords)
+    clean_questions['processed_words'] = clean_questions['tokens']
+    # clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_spell2.csv')
+
+    t1 =time.time()
+    model = KeyedVectors.load_word2vec_format('D:/ML/QNA_project/model/GoogleNews-vectors-negative300.bin/GoogleNews-vectors-negative300.bin', binary=True)
+    t2 = time.time()
+    print('model loaded in {} seconds'.format(t2-t1))
+    clean_questions['vectors'] = clean_questions['tokens'].apply(vectors)
+    # clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_vectors.csv')
 
 
-clean_questions['Average_vector'] = clean_questions['vectors'].apply(average_vector)
+    clean_questions['Average_vector'] = clean_questions['vectors'].apply(average_vector)
 
+    clean_questions = clean_questions.drop(['vectors','tokens'],axis=1)
+    clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_average.csv')
 
-clean_questions.to_csv('D:/ML/QNA_project/CSV_files/main_average.csv')
+    print(clean_questions['tokens'])
+    print(type(clean_questions['tokens'][0]))
 
-print(clean_questions['tokens'])
-print(type(clean_questions['tokens'][0]))
+    print(clean_questions.head())
 
-print(clean_questions.head())
 
