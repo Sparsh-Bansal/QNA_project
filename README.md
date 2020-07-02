@@ -34,6 +34,8 @@ one_time.py : One Can auto train a updated dataset by running this file.
 
 preprocessing_original_question.py : Data(Question-Answers) Preprocessing
 
+server.py : Flask Application(Deploy the model on web server).
+
 separate_words.py : Data Processing
 
 word2vec.py : Convert Each question into a Single Vector
