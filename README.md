@@ -54,7 +54,6 @@ Total fees will be around 12-13 lacs while u r in category 1 it's including host
 
 
 
-
 Question :
 1. What is the registration date of bba entrance
 2. entrance registration date(BBA)..??
@@ -66,29 +65,34 @@ The application form will be tenatively available in third week of February 2019
 
 
 
-
+<h6>Question</h6>
 1. what is the fees structure for B tech , computer science including hostel fee in lmnit jaipur
 2. Feesstructure (B.tech) in computerscience in LMNIT jaipurrr..???
 3. btech fees struture in LMNIT jaipur coputer scince...???
 
+Answer : 
 It is genereally same fee for all branches in a college.And it is 1,78,000 for first semester.Please go through the below link for the fee structure of LNMIIT, Jaipur:- https://www.lnmiit.ac.in/Admissions/ugadmissions/Fee_Structure.html . Hope you found this helpful...!!!. All the best...!!!
 
 
 
-
+Question : 
 
 1. where can i get the refund list of neet 2019
 2. if i dont want to take admissssssion , How can i get the 		reefund after neet counceling.... ..???
+
+Answer: 
 
 Refund Procedure : If candidate do not wish to pursue the study in college after 2nd round of counselling in this case only refund is initiated.Aspirants get their amount refunded on the same account through which they had submitted their fee.
 And once all the rounds of Counselling are completed, MCI will release the list of the Xandidated eligible for the refund of the Security deposit at their official website at mcc.nic.in.
 However candidate has to contact on MCC tollfree no and drop a mail to their finance department.This is the only way a candidate may get a refund. Hope this help you aspirants.
 
 
-
+Question : 
 
 1. Previous year rank od computer science branch in different NIT's
 2. tell me the previos year ranks of computerscience brnch in all (NIT))))>>>...?????????? 
+
+Answer:
 
 Following is the 2018 JEE MAIN cutoff for Computer Science for some NITs:-
 NIT Warangal : 1745
@@ -104,10 +108,12 @@ MANIT Jaipur : 4875
 Hope this helps :)
 Best of luck!
 
-
+Question :
 
 1. my mat score September 735.50 get my chance of good MBA college
 2. what are the chancesof geting gud mba colllegee ,,,, my score 	is around 700.
+
+Answer :
 
 Yes you have a good MAT score and you stand a good chance in getting colleges in Bengaluru (Your profile looks great, wait for the moment )
 
@@ -118,5 +124,7 @@ Cutoff reports and college information shared above.
 Conclusion :
 
 Results are Pretty Good .
+
 Average time for Question with enough imformation (13-18 sec)
+
 Average time for questions with a little imformation (25-30 sec)
