@@ -2,6 +2,7 @@ import pandas as pd
 import re
 import time
 
+
 def original():
 
     data = pd.read_csv("D:/ML/QNA_project/CSV_files/words_total.csv")
@@ -71,8 +72,10 @@ def combine():
     print(word_k)
     print(word_f)
     total = word_f + word_k
+    total = list(set(total))
     df = pd.DataFrame(total,columns=['Final_filters'])
-    df.to_csv('D:/ML/QNA_project/CSV_files/final_words_keys.csv')
+    df.to_csv('D:/ML/QNA_project/CSV_files/final_words_keys2.csv')
+
 
 # original()
 combine()

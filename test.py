@@ -1,24 +1,22 @@
 import pandas as pd
-import numpy as np
 
-id = 4545
+data = pd.read_csv('D:/ML/QNA_project/CSV_files/final_words_keys2.csv')
+list2 = data['Final_filters'].to_list()
 
-data = pd.read_csv('D:/ML/QNA_project/CSV_files/answers.csv')
+file = open('D:/ML/QNA_project/left_words.txt','r')
+list1 = file.read().split('\n')
+file.close()
 
-req = data.loc[data['question_id']==id]
+w=[]
+i=0
+for item in list2:
+    print(i)
+    i=i+1
+    if item in list1:
+        continue
+    else:
+        w.append(item)
 
-max = -1
-id = req.iloc[0]['ID']
-date = req.iloc[0]['modified_on']
-
-for i in range(len(req)):
-    up_c = int(req.iloc[i]['upvote_count'])
-    cm_c = int(req.iloc[i]['comment_count'])
-    d1 = req.iloc[i]['modified_on']
-    if up_c + cm_c > max:
-        max = up_c + cm_c
-        id = req.iloc[i]['ID']
-    if up_c == cm_c:
-        if d1 > date:
-            date = d1
-
+print(len(w))
+df  = pd.DataFrame(w,columns=['Final_filters'])
+df.to_csv('D:/ML/QNA_project/CSV_files/final_words_keys3.csv')

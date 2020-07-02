@@ -7,7 +7,7 @@ data1 = pd.read_csv('D:/ML/QNA_project/CSV_files/final_words_keys.csv')  # Keywo
 data2 = pd.read_csv('D:/ML/QNA_project/CSV_files/final_words_total2.csv')  # Questions
 
 count = data2['Total_words'].value_counts()
-file = open('D:/ML/QNA_project/dictionary_words.txt','w')
+"""file = open('D:/ML/QNA_project/dictionary_words.txt','w')  """
 
 for i in range(len(data1)):
     print(i)
@@ -33,7 +33,7 @@ for i in range(len(data1)):
 file.close()
 
 
-file = open('D:/ML/QNA_project/dictionary_words.txt','r')
+"""file = open('D:/ML/QNA_project/dictionary_words.txt','r')"""
 data = file.read().split('\n')
 file.close()
 m = {}
@@ -47,7 +47,7 @@ sorted_x = sorted(m.items(), key=lambda kv: int(kv[1]))
 print('hgfhg')
 sorted_dict = collections.OrderedDict(sorted_x)
 
-file2 = open('D:/ML/QNA_project/dictionary_words.txt','w')
+"""file2 = open('D:/ML/QNA_project/dictionary_words.txt','w')"""
 
 for key , value in sorted_dict.items():
     file2.write(key+" "+value)
@@ -55,8 +55,8 @@ for key , value in sorted_dict.items():
 print('compelete')
 file2.close()
 
-file1 = open('D:/ML/QNA_project/dictionary_words.txt','r')
-file2 = open('D:/ML/QNA_project/final_dictionary.txt','w')
+"""file1 = open('D:/ML/QNA_project/dictionary_words.txt','r')"""
+"""file2 = open('D:/ML/QNA_project/final_dictionary.txt','w')"""
 data = file1.read().split('\n')
 file1.close()
 for i in range(len(data)-1,-1,-1):

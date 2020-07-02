@@ -1,0 +1,80 @@
+Embeddings
+word2vec and globe
+Tokenizer 
+Lamenizer
+NLTK
+Stopwords
+Spell Correction
+RASA
+TAG Extraction
+Finding Similar Sentences
+Intent and Entity Recognition
+lavenhise distance
+
+
+
+Norvigs algorithm ........from collection import Counter           https://towardsdatascience.com/correcting-your-spelling-error-with-4-operations-50bcfd519bb8
+Symspell       https://towardsdatascience.com/essential-text-correction-process-for-nlp-tasks-f731a025fcc3
+
+N-gram Analysis  
+Dictionary Lookup    https://pdfs.semanticscholar.org/c64f/1bd3a1bd7f7fe4cadc469b4b94c45ad12b5d.pdf
+
+A simple spell checker ................https://blog.usejournal.com/a-simple-spell-checker-built-from-word-vectors-9f28452b6f26
+
+python pix2pix.py --mode train --output_dir facades_train --max_epochs 200 --input_dir facades/train --which_direction BtoA
+
+python pix2pix.py --mode test --output_dir facades_test --input_dir facades/val --checkpoint facades_train
+
+
+view_count
+modified_on
+answer_count
+comment_count
+
+
+keywords - only on similar cosine ranking
+
+
+final_ranking = w1*cosine_similarity + w2*(view_count_diff) + w3() .....
+
+
+modified_on
+upvote_count
+comment_count
+
+
+..extract_database.py
+matching.py
+word2vec.py
+..serate_words.py
+..add_words_dictionary.py
+..processing_original_question.py
+
+Parametrer
+margin = 0.02
+keyword_weight = 50
+sum_weight = 50
+date
+
+
+id,question,answers,modified_on,similarity,commomn_keyword,sum3,final_score
+
+results_file = open("Results.txt","w")
+
+        for i in range(len(results_final)):
+            print("{} Question".format(i+1))
+            results_file.write("{} Question\n".format(i+1))
+            print(results_final.iloc[i]["Question"])
+            results_file.write(results_final.iloc[i]["Question"])
+            print("Similarity Score : {}".format(results_final.iloc[i]['final_score']))
+            results_file.write("Similarity Score : {}".format(results_final.iloc[i]['final_score']))
+            print('Answer')
+            results_file.write('Answer')
+            print(results_final.iloc[i]['Answers'])
+            results_file.write(results_final.iloc[i]['Answers'])
+
+
+I am weak in mathmatcs but i-want to....do civilengineering!!!!....then how can i manage....????
+
+
+

@@ -20,7 +20,7 @@ model = KeyedVectors.load_word2vec_format('D:/ML/QNA_project/model/GoogleNews-ve
 print('Model Loaded')
 keyword_data = pd.read_csv('D:/ML/QNA_project/CSV_files/keywords.csv')
 filter_data = pd.read_csv('D:/ML/QNA_project/CSV_files/filters.csv')
-keys_data = pd.read_csv('D:/ML/QNA_project/CSV_files/final_words_keys2.csv')
+keys_data = pd.read_csv('D:/ML/QNA_project/CSV_files/final_words_keys3.csv')
 answer_data = pd.read_csv('D:/ML/QNA_project/CSV_files/answers.csv')
 vector_data = pd.read_csv('D:/ML/QNA_project/CSV_files/final_question_vector.csv')
 print('All CSV Files readed')
@@ -308,10 +308,33 @@ def getting_answer(final):
             answers_list.append("Answer not available")
     return answers_list
 
-j=0
+
+def str_to_list(s):
+    s = re.sub('\[|\]|\,|\'', '', s)
+    words = s.split(' ')
+    return words
+
+
+def length_of_c_KW(l_words):
+    rd = list(set(l_words))
+    return len(l_words)-len(rd)
+
+def add(words):
+    words = words + w_in_ques
+    return words
+
+# results_file = open("Results4.txt", "w")
+
+j=36
 while True:
     # text = "Why upsee is making compulsory for the students to get admission in allotted college if they want to take part in fifth round counselling.."
     text = input("Enter Your Question: ")
+
+    # results_file.write('{} Test Question'.format(j))
+    # results_file.write('\n')
+    # results_file.write(text + '\n')
+    # results_file.write('\n')
+
     t1 = time.time()
     text_cw = text
 
@@ -379,13 +402,31 @@ while True:
     now_date = now_date.strftime("%d/%m/%Y %H:%M:%S")
     filter_date_q = now_date
 
-    vector_data['Similarity'] = vector_data['Average_vector'].apply(match)
+
+
+
+
+
+    vector_data['processed_words_list'] = vector_data['processed_words'].apply(str_to_list)
+
+    vector_data['processed_words_list'] = vector_data['processed_words_list'].apply(add)
+
+    print('adding done')
+
+    vector_data['length'] = vector_data['processed_words_list'].apply(length_of_c_KW)
+
+    new_vector_data = vector_data[vector_data['length']!=0]
+
+    print('NEW LENGTH {}'.format(len(new_vector_data)))
+
+
+    new_vector_data['Similarity'] = new_vector_data['Average_vector'].apply(match)
 
     # vector_data = vector_data[vector_data['modified_on']<filter_date_q]
 
 
     # TODO : Make "30" configurable
-    dummy = vector_data.nlargest(30, ['Similarity'])
+    dummy = new_vector_data.nlargest(30, ['Similarity'])
 
     dummy['common_keyword'] = dummy['processed_words'].apply(common_keyword_new)
     min_kw = min(dummy['common_keyword'])
@@ -402,42 +443,52 @@ while True:
     max_s = max(dummy['sum3'])
     dummy['sum3'] = (dummy['sum3'] - min_s) / (max_s - min_s)
 
-    margin = 0.02
-    keyword_wt = 70
-    sum_wt = 30
-    w1 = 1
+    margin = 0.1
+    keyword_wt = 90
+    sum_wt = 10
+    w1 = 0.5
     w2 = margin * keyword_wt / 100
     w3 = margin * sum_wt / 100
 
     dummy['final_score'] = (w1 * dummy['Similarity']) + (w2 * dummy['common_keyword']) + (w3 * dummy['sum3'])
     print(dummy['final_score'].head())
-    final = dummy.nlargest(10, ['final_score'])
+    final = dummy.nlargest(5, ['final_score'])
     print(final.head())
     print(final['Question'].head())
 
     ans_list = getting_answer(final)
-
+    # print(ans_list )
+    for ans in ans_list:
+        print(ans)
+        print()
     final['Answers'] = ans_list
 
-    final = final.drop(['Unnamed: 0', 'Unnamed: 0.1', 'Average_vector', 'answer_count', 'comment_count', 'view_count'],
+    final = final.drop(['Unnamed: 0', 'Unnamed: 0.1', 'Average_vector', 'answer_count', 'comment_count', 'view_count','processed_words_list','length'],
                        axis=1)
 
     print(final.columns)
     print(final['Answers'].head())
 
-    results_file = open("Results{}.txt".format(j), "w")
     j=j+1
-    for i in range(len(final)):
-        print("{} Question".format(i + 1))
-        results_file.write("{} Question\n".format(i + 1))
-        print(final.iloc[i]["Question"])
-        results_file.write(final.iloc[i]["Question"] + '\n')
-        print("Similarity Score : {}".format(final.iloc[i]['final_score']))
-        results_file.write("Similarity Score : {}\n".format(final.iloc[i]['final_score']))
-        print('Answer')
-        results_file.write('Answer\n')
-        print(final.iloc[i]['Answers'])
-        results_file.write(final.iloc[i]['Answers']+'\n')
+    # for i in range(len(final)):
+    #     print("{} Question".format(i + 1))
+    #     results_file.write("{} Question\n".format(i + 1))
+    #     print(final.iloc[i]["Question"])
+    #     results_file.write(final.iloc[i]["Question"] + '\n')
+    #     print("Similarity Score : {}".format(final.iloc[i]['final_score']))
+    #     # results_file.write("Similarity Score : {}\n".format(final.iloc[i]['final_score']))
+    #     print('Answer')
+    #     # results_file.write('Answer\n')
+    #     print(final.iloc[i]['Answers'])
+    #     # results_file.write(final.iloc[i]['Answers']+'\n')
+    #
+    #
+    # results_file.write('Time Taken : ')
+    # results_file.write(str(time.time() - t1))
+    # results_file.write('\n')
+    # results_file.write('\n')
+    # results_file.write('\n')
 
-    results_file.close()
     print(time.time() - t1)
+
+# results_file.close()
