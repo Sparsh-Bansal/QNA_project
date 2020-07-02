@@ -43,7 +43,8 @@ word2vec.py : Convert Each question into a Single Vector
 
 Some Results are Shown below ....A same question is asked in a different way with a lot of speling mistakes 
 
-Question : 
+a) Question : 
+
 1. What is the total fee of VIT VELLORE of 4 year
 2. annual fees of vit velor..??????
 3. can you tellme totalfees of vitvellore in 2019.
@@ -54,7 +55,8 @@ Total fees will be around 12-13 lacs while u r in category 1 it's including host
 
 
 
-Question :
+b) Question :
+
 1. What is the registration date of bba entrance
 2. entrance registration date(BBA)..??
 3. can you tell me the regstrtion examdate of bba.....
@@ -65,7 +67,7 @@ The application form will be tenatively available in third week of February 2019
 
 
 
-<h6>Question</h6>
+c) Question
 1. what is the fees structure for B tech , computer science including hostel fee in lmnit jaipur
 2. Feesstructure (B.tech) in computerscience in LMNIT jaipurrr..???
 3. btech fees struture in LMNIT jaipur coputer scince...???
@@ -75,7 +77,7 @@ It is genereally same fee for all branches in a college.And it is 1,78,000 for f
 
 
 
-Question : 
+d) Question : 
 
 1. where can i get the refund list of neet 2019
 2. if i dont want to take admissssssion , How can i get the 		reefund after neet counceling.... ..???
@@ -87,7 +89,7 @@ And once all the rounds of Counselling are completed, MCI will release the list 
 However candidate has to contact on MCC tollfree no and drop a mail to their finance department.This is the only way a candidate may get a refund. Hope this help you aspirants.
 
 
-Question : 
+e) Question : 
 
 1. Previous year rank od computer science branch in different NIT's
 2. tell me the previos year ranks of computerscience brnch in all (NIT))))>>>...?????????? 
@@ -108,7 +110,7 @@ MANIT Jaipur : 4875
 Hope this helps :)
 Best of luck!
 
-Question :
+f) Question :
 
 1. my mat score September 735.50 get my chance of good MBA college
 2. what are the chancesof geting gud mba colllegee ,,,, my score 	is around 700.
@@ -121,7 +123,7 @@ https://bschool.careers360.com/articles/mat-cutoff
 Cutoff reports and college information shared above.
 
 
-Conclusion :
+# Conclusion :
 
 Results are Pretty Good .
 
